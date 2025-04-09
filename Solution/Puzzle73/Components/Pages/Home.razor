@@ -1,0 +1,71 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Puzzle 73 - Referring to Refs</h1>
+
+<p>
+	In this example, we are using the <code>@@ref</code> directive to refer to the <code>Counter</code> component. The <code>@@ref</code> directive allows us to access 
+	the component instance directly in our code. This is useful when we want to call methods or access 
+	properties of the component from the parent component.
+</p>
+
+<p>
+	Working with components using the <code>@@ref</code> keyword can lead to some interesting and unexpected 
+	behaviors. In this sample, we've got a few scenarios to look at.  The Counter component is being used here 
+	and has some methods and parameters exposed on it.  Here are the various scenarios to inspect:
+</p>
+
+<ol>
+ <li>We don't want to bind directly to the Increment property of the component, so we've added a 'SaveIncrement' button that sets that property for us when the value is confirmed in the Increment textbox.</li>
+ <li>The Reset Counter button sets the value of the counter to zero, but it never shows zero on the counter.  How can we update this feature to ensure the value shows on screen?</li>
+ <li>We have some text that we'd like to show in the counter, and a 'ShowText' button that runs a method and should show the text then hide it after 2 seconds.  Why isn't this working?</li>
+ <li>We're doing a lot of pushing on the Counter component using @@ref, is there a way to show that text without calling a method on the component?</li>
+</ol>
+
+
+<Counter @ref="MyCounter" TextVisible="HomeTextVisible" ></Counter>
+
+<br/>
+Increment the counter by:
+<input @bind="Increment"/>
+<br />
+<button @onclick="SaveIncrement">Save Increment</button>
+<br />
+<button @onclick="ResetCounter">Reset Counter</button>
+<br />
+<button @onclick="ShowText2">Show Text</button>
+
+
+@code {
+
+	Counter MyCounter { get; set; }
+	public int Increment { get; set; } = 1;
+	public bool HomeTextVisible { get; set; } = false;
+
+	public int CurrentCount { get; set; } = 0;
+
+	void SaveIncrement()
+	{
+		MyCounter.Increment = Increment;
+	}
+
+	void ResetCounter()
+	{
+		MyCounter.ResetCounter(0);
+	}
+
+	void ShowText()
+	{
+		MyCounter.ShowText();
+	}
+
+	void ShowText2()
+	{
+		HomeTextVisible = true;
+	}
+
+
+}
+
+
